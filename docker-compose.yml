@@ -1,0 +1,25 @@
+version: '3.0'
+services:
+    user-mysql:
+        image: mysql:latest
+        environment:
+            - MYSQL_ROOT_PASSWORD=1234
+            - MYSQL_DATABASE=springangular
+            - MYSQL_USER=demo
+            - MYSQL_PASSWORD=demo
+        ports:
+            - 3306:3306
+        container_name: mysql    
+    user-service:
+        build:
+            context: ./
+            dockerfile: server-user-management/Dockerfile
+        entrypoint: /wait-for-it.sh mysql:3306 -- java -Djava.security.egd=file:/dev/./urandom -Dspring.profiles.active=container -jar app.jar
+        depends_on:
+            - mysql
+        ports:
+            - 8080:8080  
+    course-client:
+        build: ./client-user-management
+        ports:
+            - 4200:80            
