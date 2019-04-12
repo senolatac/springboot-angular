@@ -35,7 +35,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .authorizeRequests()
                 // ignoring the guest's urls "
                 .antMatchers("/resources/**",
-                        "/api/user/**").permitAll()
+                        "/api/user/**", "/error").permitAll()
                 // authenticate all remaining URLS
                 .anyRequest().fullyAuthenticated().and()
                 /* "/logout" will log the user out by invalidating the HTTP Session,
