@@ -11,12 +11,10 @@ services:
             - 3306:3306
         container_name: mysql    
     user-service:
-        build:
-            context: ./
-            dockerfile: server-user-management/Dockerfile
+        build: ./server-user-management
         entrypoint: /wait-for-it.sh mysql:3306 -- java -Djava.security.egd=file:/dev/./urandom -Dspring.profiles.active=container -jar app.jar
-        depends_on:
-            - mysql
+        links:
+            - user-mysql:mysql
         ports:
             - 8080:8080  
     course-client:
